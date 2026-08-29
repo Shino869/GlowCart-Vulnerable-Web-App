@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admin Categories{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Manage Categories</h3>
+    <a href="{{ url_for('admin.add_category') }}" class="btn btn-primary">Add Category</a>
+  </div>
+  <table class="table table-bordered">
+    <thead><tr><th>ID</th><th>Name</th><th>Slug</th></tr></thead>
+    <tbody>
+      {% for category in categories %}
+      <tr><td>{{ category.id }}</td><td>{{ category.name }}</td><td>{{ category.slug }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

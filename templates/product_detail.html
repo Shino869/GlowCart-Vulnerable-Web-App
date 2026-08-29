@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}GlowCart | {{ product.name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-5 align-items-start">
+    <div class="col-lg-6">
+      <a href="{{ product.image }}" target="_blank" rel="noopener noreferrer">
+        <img src="{{ product.image }}" class="img-fluid rounded-4 shadow-sm" alt="{{ product.name }}">
+      </a>
+    </div>
+    <div class="col-lg-6">
+      <span class="badge rounded-pill bg-soft-pink text-dark">{{ product.category.name }}</span>
+      <h1 class="fw-bold mt-3">{{ product.name }}</h1>
+      <p class="text-muted">{{ product.description }}</p>
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <h3 class="mb-0">${{ '%.2f'|format(product.price) }}</h3>
+        <span class="text-decoration-line-through text-muted">${{ '%.2f'|format(product.compare_price) }}</span>
+      </div>
+      <div class="d-flex gap-2 mb-4">
+        <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="post">
+          <input type="hidden" name="next" value="{{ request.full_path }}">
+          <button class="btn btn-primary btn-lg">Add to Cart</button>
+        </form>
+        <form action="{{ url_for('main.toggle_wishlist', product_id=product.id) }}" method="post">
+          <button class="btn btn-outline-pink btn-lg">Save to Wishlist</button>
+        </form>
+      </div>
+      <div class="review-box p-3 rounded-4">
+        <h5 class="fw-bold">Customer Reviews</h5>
+        {% for review in reviews %}
+          <div class="border-bottom py-2">
+            <strong>{{ review.user.name }}</strong>
+            <div class="text-warning">{% for i in range(review.rating) %}★{% endfor %}</div>
+            <div>{{ review.comment|safe }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h4 class="fw-bold">Write a Review</h4>
+    <form action="{{ url_for('main.submit_review', product_id=product.id) }}" method="post" class="row g-3">
+      <div class="col-md-2">
+        <select class="form-select" name="rating">
+          <option value="5">5 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="2">2 Stars</option>
+          <option value="1">1 Star</option>
+        </select>
+      </div>
+      <div class="col-md-10">
+        <textarea class="form-control" name="comment" rows="3" placeholder="Share your feedback"></textarea>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary">Submit Review</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

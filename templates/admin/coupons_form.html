@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% block title %}Add Coupon{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h3>Add Coupon</h3>
+  <form method="post" class="row g-3">
+    <div class="col-md-4"><input class="form-control" name="code" placeholder="Coupon Code" required></div>
+    <div class="col-md-4"><input class="form-control" name="discount" type="number" step="0.01" placeholder="Discount" required></div>
+    <div class="col-md-4"><select class="form-select" name="type"><option value="percentage">Percentage</option><option value="fixed">Fixed</option></select></div>
+    <div class="col-md-4"><input class="form-control" name="minimum_order" type="number" step="0.01" placeholder="Minimum Order"></div>
+    <div class="col-12"><button class="btn btn-primary">Save Coupon</button></div>
+  </form>
+</div>
+{% endblock %}

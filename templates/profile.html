@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}GlowCart | Profile{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card p-4">
+        <h3>{{ user.name }}</h3>
+        <p class="text-muted mb-1">{{ user.email }}</p>
+        <p class="text-muted mb-1">{{ user.phone }}</p>
+        <p class="text-muted">{{ user.address }}</p>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card p-4">
+        <h4>Order History</h4>
+        {% if secret %}
+        <div class="alert alert-warning">Secret value: {{ secret }}</div>
+        {% endif %}
+        {% for order in orders %}
+        <div class="border rounded p-3 mb-2">
+          <div class="d-flex justify-content-between"><a href="{{ url_for('main.order_detail', order_id=order.id) }}" class="stretched-link text-decoration-none"><strong>Order #{{ order.id }}</strong></a><span>{{ order.status }}</span></div>
+          <div class="text-muted small">{{ order.created_at.strftime('%Y-%m-%d') }}</div>
+          <div class="fw-semibold">${{ '%.2f'|format(order.total) }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

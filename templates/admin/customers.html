@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admin Customers{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h3>Manage Customers</h3>
+  <table class="table table-bordered">
+    <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
+    <tbody>
+      {% for customer in customers %}
+      <tr><td>{{ customer.id }}</td><td>{{ customer.name }}</td><td>{{ customer.email }}</td><td>{{ customer.phone }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

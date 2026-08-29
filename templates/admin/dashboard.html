@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Products</div><h3>{{ product_count }}</h3></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Orders</div><h3>{{ order_count }}</h3></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Customers</div><h3>{{ customer_count }}</h3></div></div>
+    <div class="col-md-3"><div class="card p-3"><div class="text-muted small">Revenue</div><h3>${{ '%.2f'|format(revenue) }}</h3></div></div>
+  </div>
+  <div class="card p-4"><h4>Recent Orders</h4>
+    {% for order in recent_orders %}
+    <div class="border rounded p-2 mb-2">#{{ order.id }} - Total: ${{ '%.2f'|format(order.total) }} - {{ order.status }}</div>
+    {% else %}
+    <div class="text-muted">No orders yet.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

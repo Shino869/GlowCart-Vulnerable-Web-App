@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+{% block title %}{% if is_edit %}Edit Product{% else %}Add Product{% endif %}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h3 class="mb-1">{% if is_edit %}Edit Product{% else %}Add Product{% endif %}</h3>
+          <p class="text-muted mb-0">Fill in the details below and save it to your catalog.</p>
+        </div>
+        <a href="{{ url_for('admin.products') }}" class="btn btn-outline-secondary">Back to Products</a>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Product Name</label>
+          <input class="form-control" name="name" value="{{ product.name if product else '' }}" placeholder="Product Name" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Slug</label>
+          <input class="form-control" name="slug" value="{{ product.slug if product else '' }}" placeholder="Slug">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" rows="4" placeholder="Description" required>{{ product.description if product else '' }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Short Description</label>
+          <input class="form-control" name="short_description" value="{{ product.short_description if product else '' }}" placeholder="Short Description">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Price</label>
+          <input class="form-control" name="price" type="number" step="0.01" value="{{ product.price if product else '' }}" placeholder="Price" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Compare Price</label>
+          <input class="form-control" name="compare_price" type="number" step="0.01" value="{{ product.compare_price if product else '' }}" placeholder="Compare Price">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Stock</label>
+          <input class="form-control" name="stock" type="number" value="{{ product.stock if product else '' }}" placeholder="Stock">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Category</label>
+          <select class="form-select" name="category_id">
+            {% for category in categories %}
+            <option value="{{ category.id }}" {% if product and product.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Upload New Image</label>
+          <input class="form-control" type="file" name="image_file" accept="image/*">
+          <div class="form-text">Upload a product image file in JPEG, PNG, or WebP format.</div>
+          {% if product and product.image %}
+          <div class="mt-3">
+            <img src="{{ product.image }}" alt="Current product image" class="rounded" style="max-height: 120px; object-fit: cover;">
+            <div class="form-text">Leave the upload empty to keep the current image.</div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Image URL</label>
+          <div class="input-group">
+            <input class="form-control" name="image" value="{{ product.image if product else '' }}" placeholder="Image URL">
+            <button class="btn btn-outline-secondary" type="submit">Save Product</button>
+          </div>
+          <div class="form-text">Paste an external image URL if you prefer not to upload a new file.</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Import image from URL</label>
+          <form method="post" action="{{ url_for('admin.import_product_url') }}" class="d-flex gap-2">
+            <input class="form-control" name="image_url" placeholder="Image URL to import">
+            <button class="btn btn-secondary">Import</button>
+          </form>
+          {% if product and product.image %}
+          <div class="mt-3">
+            <img src="{{ product.image }}" alt="Current product image" class="rounded" style="max-height: 120px; object-fit: cover;">
+            <div class="form-text">Leave the upload empty to keep the current image.</div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-12 d-flex justify-content-between mt-4">
+          <a href="{{ url_for('admin.products') }}" class="btn btn-outline-secondary">Cancel</a>
+          <button class="btn btn-primary">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

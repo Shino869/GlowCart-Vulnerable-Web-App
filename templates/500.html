@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h1>Server Error</h1>
+  <p class="text-muted">Something went wrong while handling your request.</p>
+  {% if stack_trace %}
+  <div class="card bg-light text-start mt-4 p-3">
+    <h5 class="mb-2">Technical details</h5>
+    <pre class="small">{{ stack_trace }}</pre>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

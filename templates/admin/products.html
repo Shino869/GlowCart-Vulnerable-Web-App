@@ -1,0 +1,81 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admin Products{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h3 class="mb-1">Manage Products</h3>
+          <p class="text-muted mb-0">Create, update, and remove products from your catalog.</p>
+        </div>
+        <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary">Add Product</a>
+      </div>
+
+      {% if products %}
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Stock</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>#{{ product.id }}</td>
+              <td>
+                <div class="d-flex align-items-center gap-3">
+                  <img src="{{ product.image }}" alt="{{ product.name }}" class="rounded" style="width: 64px; height: 64px; object-fit: cover;">
+                  <div>
+                    <div class="fw-semibold">{{ product.name }}</div>
+                    <div class="text-muted small">{{ product.slug }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>${{ '%.2f'|format(product.price) }}</td>
+              <td>{{ product.category.name if product.category else 'Uncategorized' }}</td>
+              <td>{{ product.stock }}</td>
+              <td class="text-end">
+                <div class="btn-group" role="group">
+                  <a href="{{ url_for('admin.edit_product', product_id=product.id) }}" class="btn btn-outline-primary btn-sm">Edit</a>
+                  <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ product.id }}">Delete</button>
+                </div>
+              </td>
+            </tr>
+
+            <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ product.id }}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel{{ product.id }}">Delete product?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="mb-0">This will permanently remove <strong>{{ product.name }}</strong> from the catalog.</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="post" action="{{ url_for('admin.delete_product', product_id=product.id) }}">
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-info mb-0">No products are available yet.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

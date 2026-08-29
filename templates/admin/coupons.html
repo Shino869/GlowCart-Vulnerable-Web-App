@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admin Coupons{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Manage Coupons</h3>
+    <a href="{{ url_for('admin.add_coupon') }}" class="btn btn-primary">Add Coupon</a>
+  </div>
+  <table class="table table-bordered">
+    <thead><tr><th>ID</th><th>Code</th><th>Discount</th><th>Type</th></tr></thead>
+    <tbody>
+      {% for coupon in coupons %}
+      <tr><td>{{ coupon.id }}</td><td>{{ coupon.code }}</td><td>{{ coupon.discount }}</td><td>{{ coupon.type }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

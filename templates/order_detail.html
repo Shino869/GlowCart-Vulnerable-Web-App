@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}GlowCart | Order #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="card p-4">
+    <h3 class="fw-bold mb-3">Order #{{ order.id }}</h3>
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <p class="mb-1">Status: <strong>{{ order.status }}</strong></p>
+        <p class="mb-1">Payment: <strong>{{ order.payment_method }}</strong></p>
+        <p class="text-muted small">Placed on {{ order.created_at.strftime('%Y-%m-%d') }}</p>
+      </div>
+      <div class="text-end">
+        <p class="mb-1">Total</p>
+        <h4 class="fw-bold">${{ '%.2f'|format(order.total) }}</h4>
+      </div>
+    </div>
+    <hr>
+    <h5 class="fw-semibold">Items</h5>
+    {% for item in order.order_items %}
+    <div class="d-flex justify-content-between py-2 border-bottom">
+      <div>
+        <p class="mb-1">{{ item.product.name }}</p>
+        <p class="text-muted small">Qty: {{ item.quantity }}</p>
+      </div>
+      <div class="fw-semibold">${{ '%.2f'|format(item.price * item.quantity) }}</div>
+    </div>
+    {% endfor %}
+    <div class="mt-4">
+      <a href="{{ url_for('main.profile') }}" class="btn btn-outline-secondary">Back to Profile</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

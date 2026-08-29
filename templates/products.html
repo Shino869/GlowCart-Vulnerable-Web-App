@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}GlowCart | Products{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-4 align-items-center mb-4">
+    <div class="col-lg-8">
+      <h1 class="fw-bold">Shop our glow collection</h1>
+      <p class="text-muted">Filter by category, search favorites, and build your signature routine.</p>
+    </div>
+    <div class="col-lg-4">
+      <form class="d-flex gap-2">
+        <input name="q" value="{{ search }}" class="form-control" placeholder="Search products">
+        <button class="btn btn-primary">Search</button>
+      </form>
+      {% if search %}
+      <div class="alert alert-info mt-2">Showing results for: {{ search|safe }}</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="sidebar-card p-4 rounded-4">
+        <h5 class="fw-bold">Categories</h5>
+        <div class="d-flex flex-column gap-2">
+          <a href="{{ url_for('main.products') }}" class="text-decoration-none">All</a>
+          {% for cat in categories %}
+            <a href="{{ url_for('main.products', category=cat.slug) }}" class="text-decoration-none">{{ cat.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="row g-4">
+        {% for product in products %}
+        <div class="col-md-6 col-xl-4">
+          <div class="card product-card h-100">
+            <a href="{{ product.image }}" target="_blank" rel="noopener noreferrer">
+              <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+            </a>
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="text-muted small">{{ product.short_description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <strong>${{ '%.2f'|format(product.price) }}</strong>
+                <div class="d-flex gap-2">
+                  <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                  <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="post">
+                    <input type="hidden" name="next" value="{{ request.full_path }}">
+                    <button class="btn btn-sm btn-primary">Add</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
